@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -158,12 +159,15 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	case "/search":
 		handleSearch(w, r)
 	default:
-		// 对于其他路径，重定向到首页
-		http.Redirect(w, r, "/", http.StatusFound)
+		if r.URL.Path == "/api/main.go" {
+			handleIndex(w,r)
+		} else {
+			http.Redirect(w, r, "/", http.StatusFound)
+		}
 	}
 }
 
-/*
+
 func main() {
 	// 设置路由
 	http.HandleFunc("/", handleIndex)
@@ -181,7 +185,8 @@ func main() {
 		fmt.Printf("❌ 启动服务器失败: %v\n", err)
 	}
 }
-*/
+
+
 type SearchConfig struct {
 	Keyword string
 	Type    string
@@ -205,7 +210,7 @@ func handleSearch(w http.ResponseWriter, r *http.Request) {
 
 	// 检查是否选择了题型
 	if config.Type == "" {
-		tmpl, err := template.ParseFiles("./root.html")
+		tmpl, err := template.ParseFiles("root.html")
 		if err != nil {
 			http.Error(w, "模板解析错误: "+err.Error(), http.StatusInternalServerError)
 			return
