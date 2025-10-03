@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -164,6 +163,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
 func main() {
 	// 设置路由
 	http.HandleFunc("/", handleIndex)
@@ -180,10 +180,8 @@ func main() {
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		fmt.Printf("❌ 启动服务器失败: %v\n", err)
 	}
-
-
 }
-
+*/
 type SearchConfig struct {
 	Keyword string
 	Type    string
